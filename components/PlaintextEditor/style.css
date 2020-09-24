@@ -20,3 +20,41 @@
   line-height: 40px;
   background-color: var(--color-background);
 }
+
+.editor .title .discard {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark-mute);
+  background-color: var(--color-white);
+  border-color: var(--color-border);
+  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
+  border-radius: 4px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+.editor .title .discard:hover {
+  background-color: var(--color-background);
+}
+
+.editor .title .save {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark-mute);
+  background-color: var(--color-white);
+  border-color: var(--color-border);
+  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
+  border-radius: 4px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+.editor .title .save:hover {
+  background-color: var(--color-background);
+}
+
+.editor .slateEditor {
+  padding: 20px;
+  height: 100%;
+  border-bottom: 1px solid var(--color-border);
+}

@@ -5,9 +5,10 @@ import path from 'path';
 import classNames from 'classnames';
 
 import { listFiles } from '../files';
+import { generateNewFile, generateTextFromObj } from '../helperFunctions/writeHelpers';
 
 // Used below, these need to be registered
-import MarkdownEditor from '../MarkdownEditor';
+import MarkdownEditor from '../components/MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
 
 import IconPlaintextSVG from '../public/icon-plaintext.svg';
@@ -76,7 +77,7 @@ FilesTable.propTypes = {
   setActiveFile: PropTypes.func
 };
 
-function Previewer({ file }) {
+function Previewer({ file, setEditMode }) {
   const [value, setValue] = useState('');
 
   useEffect(() => {
@@ -90,7 +91,7 @@ function Previewer({ file }) {
       <div className={css.title}>
         {path.basename(file.name)}
         <div style={{ flex: 1 }}></div>
-        <button>{'Edit'}</button>
+        <button onClick={() => { setEditMode(true) }}>{'Edit'}</button>
       </div>
       <div className={css.content}>{value}</div>
     </div>
@@ -98,7 +99,8 @@ function Previewer({ file }) {
 }
 
 Previewer.propTypes = {
-  file: PropTypes.object
+  file: PropTypes.object,
+  setEditMode: PropTypes.func
 };
 
 // Uncomment keys to register editors for media types
@@ -112,12 +114,12 @@ const REGISTERED_EDITORS = {
 function PlaintextFilesChallenge() {
   const [files, setFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     const files = listFiles();
     setFiles(files);
   }, []);
-
 
   // Function passed into Editor component which will write the file changes
   // made in the editor to the 'files' array which is local storage for
@@ -126,11 +128,26 @@ function PlaintextFilesChallenge() {
   // the files created in Files.js. Would need to store the files persistently
   // somewhere to allow for changes to be saved after reloads. This function
   // would then need to update the stored files.
-  const write = file => {
-    console.log('Writing soon... ', file.name);
 
-    // TODO: Write the file to the `files` array
-  };
+  function write(value) {
+    if (value === null) {
+      setEditMode(false);
+      return;
+    }
+
+    let tempFiles = files;
+    let tempActiveFile = activeFile;
+
+    for (let i=0;i<files.length;i++) {
+      if (tempFiles[i].name === tempActiveFile.name) {
+        tempFiles[i] = generateNewFile(generateTextFromObj(value), tempFiles[i].name, tempFiles[i].type);;
+        setActiveFile(tempFiles[i]);
+        setFiles(tempFiles);
+        break;
+      }
+    }
+    setEditMode(false);
+  }
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
 
@@ -169,16 +186,12 @@ function PlaintextFilesChallenge() {
       </aside>
 
       <main className={css.editorWindow}>
-        {activeFile && (
-          <>
-            {Editor && <Editor file={activeFile} write={write} />}
-            {!Editor && <Previewer file={activeFile} />}
-          </>
-        )}
-
-        {!activeFile && (
-          <div className={css.empty}>Select a file to view or edit</div>
-        )}
+        {activeFile ?
+          (editMode ?
+            (<Editor file={activeFile} write={write} />)
+            : <Previewer file={activeFile} setEditMode={setEditMode}/>)
+          : (<div className={css.empty}>Select a file to view or edit</div>)
+        }
       </main>
     </div>
   );
