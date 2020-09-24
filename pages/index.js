@@ -1,115 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import path from 'path';
-import classNames from 'classnames';
 
 import { listFiles } from '../files';
-import { generateNewFile, generateTextFromObj } from '../helperFunctions/writeHelpers';
-
-// Used below, these need to be registered
-import MarkdownEditor from '../components/MarkdownEditor';
-import PlaintextEditor from '../components/PlaintextEditor';
-
-import IconPlaintextSVG from '../public/icon-plaintext.svg';
-import IconMarkdownSVG from '../public/icon-markdown.svg';
-import IconJavaScriptSVG from '../public/icon-javascript.svg';
-import IconJSONSVG from '../public/icon-json.svg';
+import { generateNewFile, generateTextFromObj } from '../helperFunctions/WriteHelpers';
+import FilesTable from '../components/FilesTable';
+import Previewer from '../components/Previewer';
+import Editor from '../components/Editor';
 
 import css from './style.module.css';
-
-const TYPE_TO_ICON = {
-  'text/plain': IconPlaintextSVG,
-  'text/markdown': IconMarkdownSVG,
-  'text/javascript': IconJavaScriptSVG,
-  'application/json': IconJSONSVG
-};
-
-function FilesTable({ files, activeFile, setActiveFile }) {
-  return (
-    <div className={css.files}>
-      <table>
-        <thead>
-          <tr>
-            <th>File</th>
-            <th>Modified</th>
-          </tr>
-        </thead>
-        <tbody>
-          {files.map(file => (
-            <tr
-              key={file.name}
-              className={classNames(
-                css.row,
-                activeFile && activeFile.name === file.name ? css.active : ''
-              )}
-              onClick={() => setActiveFile(file)}
-            >
-              <td className={css.file}>
-                <div
-                  className={css.icon}
-                  dangerouslySetInnerHTML={{
-                    __html: TYPE_TO_ICON[file.type]
-                  }}
-                ></div>
-                {path.basename(file.name)}
-              </td>
-
-              <td>
-                {new Date(file.lastModified).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-FilesTable.propTypes = {
-  files: PropTypes.arrayOf(PropTypes.object),
-  activeFile: PropTypes.object,
-  setActiveFile: PropTypes.func
-};
-
-function Previewer({ file, setEditMode }) {
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    (async () => {
-      setValue(await file.text());
-    })();
-  }, [file]);
-
-  return (
-    <div className={css.preview}>
-      <div className={css.title}>
-        {path.basename(file.name)}
-        <div style={{ flex: 1 }}></div>
-        <button onClick={() => { setEditMode(true) }}>{'Edit'}</button>
-      </div>
-      <div className={css.content}>{value}</div>
-    </div>
-  );
-}
-
-Previewer.propTypes = {
-  file: PropTypes.object,
-  setEditMode: PropTypes.func
-};
-
-// Uncomment keys to register editors for media types
-// There are currently only editors for .txt and .md files. Need to create
-// new directories and components for .js and .json files
-const REGISTERED_EDITORS = {
-  "text/plain": PlaintextEditor
-  // "text/markdown": MarkdownEditor,
-};
 
 function PlaintextFilesChallenge() {
   const [files, setFiles] = useState([]);
@@ -148,8 +47,6 @@ function PlaintextFilesChallenge() {
     }
     setEditMode(false);
   }
-
-  const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
 
   return (
     <div className={css.page}>

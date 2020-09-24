@@ -1,0 +1,72 @@
+:root {
+  --color-white: #ffffff;
+  --color-background: #f6f8f9;
+
+  --color-active: #1f53f1;
+  --color-active-highlight: #316ed81f;
+
+  --color-text-dark: #000a41;
+  --color-text-dark-mute: #607087;
+
+  --color-border: #e6e8eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.preview {
+  width: 640px;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
+  border-radius: 4px;
+}
+
+.preview .title {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark-mute);
+  padding: 0 20px;
+  line-height: 40px;
+  background-color: var(--color-background);
+}
+
+.preview .title button {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark-mute);
+  background-color: var(--color-white);
+  border-color: var(--color-border);
+  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
+  border-radius: 4px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+.preview .title button:hover {
+  background-color: var(--color-background);
+}
+
+.preview .content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  white-space: pre-wrap;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
+  padding: 20px;
+}
+
+.preview .content .codeblock {
+
+}

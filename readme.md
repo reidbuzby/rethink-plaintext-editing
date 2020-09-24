@@ -12,3 +12,10 @@ To run the challenge:
 Once complete, please email us a link to your forked repo with clean, tested code. We will use Chrome to run it.
 
 - Rethink Engineering
+
+# Packages used
+
+react-markdown
+react-code-blocks
+slate
+reactjs-popup
