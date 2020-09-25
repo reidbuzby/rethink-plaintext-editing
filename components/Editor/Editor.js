@@ -13,7 +13,6 @@ import css from './style.css';
 function Editor({ file, write }) {
   const [value, setValue] = useState(generateInitialValue(''));
   const [edited, setEdited] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -21,41 +20,18 @@ function Editor({ file, write }) {
     })();
   }, [file]);
 
-  function handleClose() {
-    setShowModal(false);
-  }
-
-  function discardChanges() {
-    setShowModal(false);
-    write(null);
-  }
-
   function validateDiscard() {
     if (!edited) {
       write(null);
     }
     else {
-      setShowModal(true);
+      if(confirm("Are you sure you want to discard changes?")) {
+        write(null);
+      }
     }
   }
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-
-  // const modal = (
-  //   <Modal show={showModal} onHide={handleClose}>
-  //     <Modal.Header closeButton>
-  //       <Modal.Title>Discard Changes?</Modal.Title>
-  //     </Modal.Header>
-  //     <Modal.Footer>
-  //       <button onClick={handleClose}>
-  //         Close
-  //       </button>
-  //       <button onClick={discardChanges}>
-  //         Discard Changes
-  //       </button>
-  //     </Modal.Footer>
-  //   </Modal>
-  // );
 
   // TODO - editor does not dynamically resize when text goes out of box at the bottom
   return (
@@ -63,7 +39,7 @@ function Editor({ file, write }) {
       <div className={css.title}>
         {path.basename(file.name)}
         <div style={{ flex: 1 }}></div>
-        <button className={css.discard} onClick={() => { write(null) }}>{'Discard'}</button>
+        <button className={css.discard} onClick={() => { validateDiscard() }}>{'Discard'}</button>
         <button className={css.save} onClick={() => { write(value) }}>{'Save'}</button>
       </div>
       <div className={css.slateEditor}>
@@ -71,29 +47,11 @@ function Editor({ file, write }) {
             setValue(value);
             setEdited(true);
           }}>
-          <Editable placeholder="Enter some plain text..." />
+          <Editable placeholder="Enter text..." />
         </Slate>
       </div>
     </div>
   );
-
-  // switch (file.type) {
-  //   // Plaintext editor
-  //   case 'text/plain':
-  //     return textEditor;
-  //
-  //   // Markdown editor
-  //   case 'text/markdown':
-  //     return textEditor;
-  //
-  //   // JavaScript editor
-  //   case 'text/javascript':
-  //     return textEditor;
-  //
-  //   // JSON Editor
-  //   case 'application/json':
-  //     return textEditor;
-  // }
 }
 
 Editor.propTypes = {

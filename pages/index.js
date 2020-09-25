@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 
-import { listFiles } from '../files';
 import { generateNewFile, generateTextFromObj } from '../helperFunctions/WriteHelpers';
-import FilesTable from '../components/FilesTable';
-import Previewer from '../components/Previewer';
-import Editor from '../components/Editor';
+import { getFiles, getFileJSON, putFile } from '../helperFunctions/FileHandler';
+import FilesTable from '../components/FilesTable/FilesTable';
+import Previewer from '../components/Previewer/Previewer';
+import Editor from '../components/Editor/Editor';
 
 import css from './style.module.css';
 
@@ -16,36 +16,51 @@ function PlaintextFilesChallenge() {
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    const files = listFiles();
-    setFiles(files);
+    getFiles().then((result) => {
+      if (result) {
+        setFiles(result);
+      }
+      else {
+        setFiles([]);
+      }
+    });
   }, []);
 
-  // Function passed into Editor component which will write the file changes
-  // made in the editor to the 'files' array which is local storage for
-  // the files presented. If you only update the files array, when the page
-  // reloads the changes will be erased as the files array is initialized to
-  // the files created in Files.js. Would need to store the files persistently
-  // somewhere to allow for changes to be saved after reloads. This function
-  // would then need to update the stored files.
-
+  function preProcessSetActiveFile(value) {
+    if (editMode) {
+      alert("Save or discard changes to current file");
+    }
+    else {
+      setActiveFile(value);
+    }
+  }
+  
   function write(value) {
     if (value === null) {
       setEditMode(false);
       return;
     }
 
-    let tempFiles = files;
-    let tempActiveFile = activeFile;
-
-    for (let i=0;i<files.length;i++) {
-      if (tempFiles[i].name === tempActiveFile.name) {
-        tempFiles[i] = generateNewFile(generateTextFromObj(value), tempFiles[i].name, tempFiles[i].type);;
-        setActiveFile(tempFiles[i]);
-        setFiles(tempFiles);
-        break;
-      }
+    const oldFile = getFileJSON(activeFile.name);
+    const newFileJSON = {
+      text: generateTextFromObj(value),
+      name: oldFile.name,
+      date: new Date(),
+      type: oldFile.type
     }
-    setEditMode(false);
+    const newFileObj = generateNewFile(generateTextFromObj(value), oldFile.name, oldFile.type);
+    putFile(newFileJSON);
+
+    getFiles().then((result) => {
+      if (result) {
+        setFiles(result);
+        setActiveFile(newFileObj);
+      }
+      else {
+        setFiles([]);
+      }
+      setEditMode(false);
+    });
   }
 
   return (
@@ -66,7 +81,7 @@ function PlaintextFilesChallenge() {
         <FilesTable
           files={files}
           activeFile={activeFile}
-          setActiveFile={setActiveFile}
+          setActiveFile={preProcessSetActiveFile}
         />
 
         <div style={{ flex: 1 }}></div>

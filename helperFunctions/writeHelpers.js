@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+// returns a new File object
 export function generateNewFile(text, fileName, type) {
   return new File(
     [text],
@@ -14,9 +15,10 @@ export function generateNewFile(text, fileName, type) {
 generateNewFile.propTypes = {
   text: PropTypes.string,
   fileName: PropTypes.string,
-  type: PropTypes.type
+  type: PropTypes.string
 };
 
+// returns a string representing the text body of the given object
 export function generateTextFromObj(object) {
   let text = '';
   for (let i=0;i<object.length;i++) {
