@@ -33,7 +33,6 @@ function Editor({ file, write }) {
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-  // TODO - editor does not dynamically resize when text goes out of box at the bottom
   return (
     <div className={css.editor}>
       <div className={css.title}>

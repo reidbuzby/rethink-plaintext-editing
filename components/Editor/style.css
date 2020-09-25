@@ -1,6 +1,6 @@
 .editor {
   width: 100%;
-  height: 80%;
+  height: 100%;
   background-color: var(--color-white);
   display: flex;
   flex-direction: column;
@@ -22,39 +22,67 @@
 }
 
 .editor .title .discard {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-text-dark-mute);
-  background-color: var(--color-white);
-  border-color: var(--color-border);
-  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
-  border-radius: 4px;
+  font-size: 13px;
   height: 30px;
   margin-top: 5px;
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#607087;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:600;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
 }
 
 .editor .title .discard:hover {
-  background-color: var(--color-background);
+  background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+
+.editor .title .discard:active {
+  position:relative;
+	top:1px;
 }
 
 .editor .title .save {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--color-text-dark-mute);
-  background-color: var(--color-white);
-  border-color: var(--color-border);
-  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
-  border-radius: 4px;
   height: 30px;
   margin-top: 5px;
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#496bc9;
+	font-family:Arial;
+	font-weight:600;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
 }
 
 .editor .title .save:hover {
-  background-color: var(--color-background);
+  background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
 }
+
+.editor .title .save:active {
+	position:relative;
+	top:1px;
+}
+
 
 .editor .slateEditor {
   padding: 20px;
   height: 100%;
-  border-bottom: 1px solid var(--color-border);
+  max-height: 50%;
 }
