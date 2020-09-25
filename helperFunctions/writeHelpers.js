@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { getFiles, getFileJSON, putFile } from './FileHandler';
 
 // returns a new File object
 export function generateNewFile(text, fileName, type) {
@@ -16,6 +17,38 @@ generateNewFile.propTypes = {
   text: PropTypes.string,
   fileName: PropTypes.string,
   type: PropTypes.string
+};
+
+// void, updates the file states of pages/index.js by calling inherited functions
+export function updateFiles(value, activeFile, setFiles, setActiveFile, setEditMode) {
+  const oldFile = getFileJSON(activeFile.name);
+  const newFileJSON = {
+    text: generateTextFromObj(value),
+    name: oldFile.name,
+    date: new Date(),
+    type: oldFile.type
+  }
+  const newFileObj = generateNewFile(generateTextFromObj(value), oldFile.name, oldFile.type);
+  putFile(newFileJSON);
+
+  getFiles().then((result) => {
+    if (result) {
+      setFiles(result);
+      setActiveFile(newFileObj);
+    }
+    else {
+      setFiles([]);
+    }
+    setEditMode(false);
+  });
+}
+
+updateFiles.propTypes = {
+  value: PropTypes.object,
+  activeFile: PropTypes.object,
+  setFiles: PropTypes.func,
+  setActiveFile: PropTypes.func,
+  setEditMode: PropTypes.func
 };
 
 // returns a string representing the text body of the given object

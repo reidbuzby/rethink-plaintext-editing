@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 
-import { generateNewFile, generateTextFromObj } from '../helperFunctions/WriteHelpers';
-import { getFiles, getFileJSON, putFile } from '../helperFunctions/FileHandler';
+import { getFiles } from '../helperFunctions/FileHandler';
+import { updateFiles } from '../helperFunctions/WriteHelpers';
 import FilesTable from '../components/FilesTable/FilesTable';
 import Previewer from '../components/Previewer/Previewer';
 import Editor from '../components/Editor/Editor';
@@ -34,33 +34,13 @@ function PlaintextFilesChallenge() {
       setActiveFile(value);
     }
   }
-  
+
   function write(value) {
     if (value === null) {
       setEditMode(false);
       return;
     }
-
-    const oldFile = getFileJSON(activeFile.name);
-    const newFileJSON = {
-      text: generateTextFromObj(value),
-      name: oldFile.name,
-      date: new Date(),
-      type: oldFile.type
-    }
-    const newFileObj = generateNewFile(generateTextFromObj(value), oldFile.name, oldFile.type);
-    putFile(newFileJSON);
-
-    getFiles().then((result) => {
-      if (result) {
-        setFiles(result);
-        setActiveFile(newFileObj);
-      }
-      else {
-        setFiles([]);
-      }
-      setEditMode(false);
-    });
+    updateFiles(value, activeFile, setFiles, setActiveFile, setEditMode);
   }
 
   return (
