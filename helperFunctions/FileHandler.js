@@ -103,8 +103,8 @@ function getFileNamesArray() {
 function getFilesFromStorage(fileNames) {
   let files = [];
   fileNames = JSON.parse(fileNames);
-  for (let i=0;i<fileNames.length;i++) {
-    const fileName = fileNames[i];
+
+  fileNames.forEach((fileName) => {
     const fileData = JSON.parse(localStorage.getItem(fileName));
     const newFile = new File(
       [fileData.text],
@@ -112,10 +112,29 @@ function getFilesFromStorage(fileNames) {
       { type: fileData.type, lastModified: new Date(fileData.date)}
     );
     files.push(newFile);
-  }
+  });
   return files;
 }
 
 getFilesFromStorage.propTypes = {
   fileNames: PropTypes.string
+}
+
+export function deleteFile(file) {
+  const fileName = path.basename(file.name);
+  const fileNames = getFileNamesArray();
+  const newFileNames = [];
+
+  fileNames.forEach((name) => {
+    if (name !== fileName) {
+      newFileNames.push(name);
+    }
+  });
+
+  localStorage.setItem('fileNames', JSON.stringify(newFileNames));
+  localStorage.removeItem(fileName);
+}
+
+deleteFile.propTypes = {
+  file: PropTypes.func
 }

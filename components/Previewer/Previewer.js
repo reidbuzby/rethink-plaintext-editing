@@ -6,7 +6,7 @@ import path from 'path';
 
 import css from './style.css';
 
-function Previewer({ file, setMode }) {
+function Previewer({ file, setMode, deleteActiveFile }) {
   const [value, setValue] = useState('');
 
   useEffect(() => {
@@ -15,19 +15,30 @@ function Previewer({ file, setMode }) {
     })();
   }, [file]);
 
-  const editButton = (<button className={css.btn} onClick={() => { setMode('edit') }}>{'Edit'}</button>);
+  function preProcessDeleteFile() {
+    if (confirm('Are you sure you want to delete this file?')) {
+      deleteActiveFile();
+    }
+  }
+
   const fileName = path.basename(file.name);
+  const editButton = (<button className={css.btn} onClick={() => { setMode('edit') }}>{'Edit'}</button>);
+  const deleteButton = (<button className={css.delete} onClick={() => preProcessDeleteFile() }>{'Delete'}</button>);
+  const titleBar = (
+      <div className={css.title}>
+        {fileName}
+        <div style={{ flex: 1 }}></div>
+        {deleteButton}
+        {editButton}
+      </div>
+  );
 
   switch (file.type) {
     // Plaintext previewer
     case 'text/plain':
       return (
         <div className={css.preview}>
-          <div className={css.title}>
-            {fileName}
-            <div style={{ flex: 1 }}></div>
-            {editButton}
-          </div>
+          {titleBar}
           <div className={css.content}>{value}</div>
         </div>
       );
@@ -36,11 +47,7 @@ function Previewer({ file, setMode }) {
     case 'text/markdown':
       return (
         <div className={css.preview}>
-          <div className={css.title}>
-            {fileName}
-            <div style={{ flex: 1 }}></div>
-            {editButton}
-          </div>
+          {titleBar}
           <div className={css.content}>
             <ReactMarkdown source={value} />
           </div>
@@ -51,11 +58,7 @@ function Previewer({ file, setMode }) {
     case 'text/javascript':
       return (
         <div className={css.preview}>
-          <div className={css.title}>
-            {fileName}
-            <div style={{ flex: 1 }}></div>
-            {editButton}
-          </div>
+          {titleBar}
           <div className={css.content}>
             <CodeBlock
               text={value}
@@ -69,11 +72,7 @@ function Previewer({ file, setMode }) {
     case 'application/json':
       return (
         <div className={css.preview}>
-          <div className={css.title}>
-            {fileName}
-            <div style={{ flex: 1 }}></div>
-            {editButton}
-          </div>
+          {titleBar}
           <div className={css.content}>
             <CodeBlock
               text={value}
@@ -87,7 +86,8 @@ function Previewer({ file, setMode }) {
 
 Previewer.propTypes = {
   file: PropTypes.object,
-  setMode: PropTypes.func
+  setMode: PropTypes.func,
+  deleteActiveFile: PropTypes.func
 };
 
 export default Previewer;

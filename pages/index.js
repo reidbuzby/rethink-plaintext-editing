@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 
-import { getFiles, postFile } from '../helperFunctions/FileHandler';
+import { getFiles, postFile, deleteFile } from '../helperFunctions/FileHandler';
 import { updateFiles } from '../helperFunctions/WriteHelpers';
 import FilesTable from '../components/FilesTable/FilesTable';
 import Previewer from '../components/Previewer/Previewer';
@@ -37,6 +37,17 @@ function PlaintextFilesChallenge() {
     }
   }
 
+  function deleteActiveFile() {
+    setActiveFile(null);
+    deleteFile(activeFile);
+    getFiles().then((result) => {
+      if (result) {
+        setFiles(result);
+        setMode('view');
+      }
+    });
+  }
+
   function createNewFile(fileName, fileType) {
     if (fileName === null && fileType === null) {
       setMode(null);
@@ -63,7 +74,7 @@ function PlaintextFilesChallenge() {
   }
 
   const editor = (<Editor file={activeFile} write={write} />);
-  const previewer = (<Previewer file={activeFile} setMode={setMode}/>);
+  const previewer = (<Previewer file={activeFile} deleteActiveFile={deleteActiveFile} setMode={setMode}/>);
   const defaultView = (<div className={css.empty}>Select a file to view or edit</div>);
   const fileCreator = (<FileCreator createNewFile={createNewFile}/>);
 
