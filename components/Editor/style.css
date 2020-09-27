@@ -21,29 +21,31 @@
   background-color: var(--color-background);
 }
 
+/* Discard button */
 .editor .title .discard {
   font-size: 13px;
   height: 30px;
   margin-top: 5px;
-  box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	background-color:#ffffff;
+  margin-right: 5px;
+  box-shadow:inset 0px -1px 0px 1px var(--color-background);
+	background:linear-gradient(to bottom, var(--color-white) 5%, var(--color-gradient) 100%);
+	background-color: var(--color-white);
 	border-radius:6px;
-	border:1px solid #dcdcdc;
+	border:1px solid var(--color-button-border);
 	display:inline-block;
 	cursor:pointer;
-	color:#607087;
+	color: var(--color-text-dark);
 	font-family:Arial;
 	font-size:15px;
-	font-weight:600;
+	font-weight:400;
 	padding:6px 24px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
+	text-shadow:0px 1px 0px var(--color-white);
 }
 
 .editor .title .discard:hover {
-  background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-	background-color:#f6f6f6;
+  background:linear-gradient(to bottom, var(--color-button-gradient) 5%, #ffffff 100%);
+	background-color:var(--color-button-gradient);
 }
 
 .editor .title .discard:active {
@@ -51,36 +53,48 @@
 	top:1px;
 }
 
+.editor .title .discard:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Save button */
 .editor .title .save {
-  font-size: 14px;
+  font-size: 13px;
   height: 30px;
   margin-top: 5px;
-  box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	background-color:#ffffff;
+  box-shadow:inset 0px -1px 0px 1px var(--color-background);
+	background:linear-gradient(to bottom, var(--color-white) 5%, var(--color-gradient) 100%);
+	background-color: var(--color-white);
 	border-radius:6px;
-	border:1px solid #dcdcdc;
+	border:1px solid var(--color-button-border);
 	display:inline-block;
 	cursor:pointer;
-	color:#496bc9;
+	color: var(--color-button-blue);
 	font-family:Arial;
-	font-weight:600;
+	font-size:15px;
+	font-weight:400;
 	padding:6px 24px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
+	text-shadow:0px 1px 0px var(--color-white);
 }
 
 .editor .title .save:hover {
-  background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-	background-color:#f6f6f6;
+  background:linear-gradient(to bottom, var(--color-button-gradient) 5%, #ffffff 100%);
+	background-color:var(--color-button-gradient);
 }
 
 .editor .title .save:active {
-	position:relative;
+  position:relative;
 	top:1px;
 }
 
+.editor .title .save:focus {
+  outline: none;
+  box-shadow: none;
+}
 
+/* Text editor */
 .editor .slateEditor {
   padding: 20px;
   height: 100%;

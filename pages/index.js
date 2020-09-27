@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 
-import { getFiles } from '../helperFunctions/FileHandler';
+import { getFiles, postFile } from '../helperFunctions/FileHandler';
 import { updateFiles } from '../helperFunctions/WriteHelpers';
 import FilesTable from '../components/FilesTable/FilesTable';
 import Previewer from '../components/Previewer/Previewer';
 import Editor from '../components/Editor/Editor';
+import FileCreator from '../components/FileCreator/FileCreator';
 
 import css from './style.module.css';
 
 function PlaintextFilesChallenge() {
   const [files, setFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
-  const [editMode, setEditMode] = useState(false);
+  const [mode, setMode] = useState(null);
 
   useEffect(() => {
     getFiles().then((result) => {
@@ -27,21 +28,44 @@ function PlaintextFilesChallenge() {
   }, []);
 
   function preProcessSetActiveFile(value) {
-    if (editMode) {
+    if (mode === 'edit') {
       alert("Save or discard changes to current file");
     }
     else {
       setActiveFile(value);
+      setMode('view');
+    }
+  }
+
+  function createNewFile(fileName, fileType) {
+    if (fileName === null && fileType === null) {
+      setMode(null);
+      setActiveFile(null);
+    }
+    else {
+      const newFile = postFile(fileName, fileType);
+      getFiles().then((result) => {
+        if (result) {
+          setFiles(result);
+          setActiveFile(newFile);
+          setMode('edit');
+        }
+      });
     }
   }
 
   function write(value) {
     if (value === null) {
-      setEditMode(false);
+      setMode('view');
       return;
     }
-    updateFiles(value, activeFile, setFiles, setActiveFile, setEditMode);
+    updateFiles(value, activeFile, setFiles, setActiveFile, setMode);
   }
+
+  const editor = (<Editor file={activeFile} write={write} />);
+  const previewer = (<Previewer file={activeFile} setMode={setMode}/>);
+  const defaultView = (<div className={css.empty}>Select a file to view or edit</div>);
+  const fileCreator = (<FileCreator createNewFile={createNewFile}/>);
 
   return (
     <div className={css.page}>
@@ -57,6 +81,13 @@ function PlaintextFilesChallenge() {
             than rendering and editing plaintext? Not much, as it turns out.
           </div>
         </header>
+
+        <div className={css.newFile}>
+          <button className={css.btn} onClick={() => {
+            setMode('create');
+            setActiveFile(null);
+          }}>New file</button>
+        </div>
 
         <FilesTable
           files={files}
@@ -77,16 +108,22 @@ function PlaintextFilesChallenge() {
         </footer>
       </aside>
 
-      <main className={css.editorWindow}>
+      <main className={css.contentWindow}>
         {activeFile ?
-          (editMode ?
-            (<Editor file={activeFile} write={write} />)
-            : <Previewer file={activeFile} setEditMode={setEditMode}/>)
-          : (<div className={css.empty}>Select a file to view or edit</div>)
+          mode === 'edit' ?
+            editor
+          : mode === 'view' ?
+            previewer
+          : defaultView
+        : mode === 'create' ?
+          fileCreator
+          : defaultView
         }
       </main>
     </div>
   );
 }
+
+
 
 export default PlaintextFilesChallenge;

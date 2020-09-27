@@ -20,7 +20,7 @@ generateNewFile.propTypes = {
 };
 
 // void, updates the file states of pages/index.js by calling inherited functions
-export function updateFiles(value, activeFile, setFiles, setActiveFile, setEditMode) {
+export function updateFiles(value, activeFile, setFiles, setActiveFile, setMode) {
   const oldFile = getFileJSON(activeFile.name);
   const newFileJSON = {
     text: generateTextFromObj(value),
@@ -39,7 +39,7 @@ export function updateFiles(value, activeFile, setFiles, setActiveFile, setEditM
     else {
       setFiles([]);
     }
-    setEditMode(false);
+    setMode('view');
   });
 }
 
@@ -48,7 +48,7 @@ updateFiles.propTypes = {
   activeFile: PropTypes.object,
   setFiles: PropTypes.func,
   setActiveFile: PropTypes.func,
-  setEditMode: PropTypes.func
+  setMode: PropTypes.func
 };
 
 // returns a string representing the text body of the given object

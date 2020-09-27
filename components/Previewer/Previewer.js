@@ -6,7 +6,7 @@ import path from 'path';
 
 import css from './style.css';
 
-function Previewer({ file, setEditMode }) {
+function Previewer({ file, setMode }) {
   const [value, setValue] = useState('');
 
   useEffect(() => {
@@ -15,7 +15,7 @@ function Previewer({ file, setEditMode }) {
     })();
   }, [file]);
 
-  const editButton = (<button onClick={() => { setEditMode(true) }}>{'Edit'}</button>);
+  const editButton = (<button className={css.btn} onClick={() => { setMode('edit') }}>{'Edit'}</button>);
   const fileName = path.basename(file.name);
 
   switch (file.type) {
@@ -87,7 +87,7 @@ function Previewer({ file, setEditMode }) {
 
 Previewer.propTypes = {
   file: PropTypes.object,
-  setEditMode: PropTypes.func
+  setMode: PropTypes.func
 };
 
 export default Previewer;

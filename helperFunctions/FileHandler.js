@@ -1,4 +1,5 @@
 import { listFiles } from './HardcodedFiles';
+import { generateNewFile } from './WriteHelpers';
 import PropTypes from 'prop-types';
 import path from 'path';
 
@@ -56,6 +57,46 @@ export function putFile(fileJSON) {
 
 putFile.propTypes = {
   fileJSON: PropTypes.object
+}
+
+// returns a file object so index.js can set the activeFile, adds new file
+// to local storage.
+export function postFile(fileName, fileType) {
+  const newFileObj = generateNewFile('', fileName, fileType);
+  const newFileJSON = {
+    text: '',
+    name: path.basename(newFileObj.name),
+    type: newFileObj.type,
+    date: newFileObj.lastModified
+  };
+  const fileNamesArray = getFileNamesArray();
+  fileNamesArray.push(fileName);
+  localStorage.setItem('fileNames', JSON.stringify(fileNamesArray));
+  localStorage.setItem(fileName, JSON.stringify(newFileJSON));
+  return newFileObj;
+}
+
+postFile.propTypes = {
+  fileName: PropTypes.string,
+  fileType: PropTypes.string
+}
+
+// returns a boolean, true if the given filename is already used, false otherwise
+export function fileNameTaken(fileName) {
+  const fileNames = localStorage.getItem('fileNames');
+  if (fileNames.includes(fileName)) {
+    return true;
+  }
+  return false;
+}
+
+fileNameTaken.propTypes = {
+  fileName: PropTypes.string
+}
+
+function getFileNamesArray() {
+  const fileNames = JSON.parse(localStorage.getItem('fileNames'));
+  return fileNames;
 }
 
 // returns an array of files stored in local storage

@@ -5,7 +5,6 @@
   border-radius: 4px;
 }
 
-/* title bar with edit button */
 .preview .title {
   width: 100%;
   display: flex;
@@ -19,7 +18,8 @@
   background-color: var(--color-background);
 }
 
-.preview .title .btn {
+/* Cancel button */
+.preview .title .cancel {
   font-size: 13px;
   height: 30px;
   margin-top: 5px;
@@ -39,32 +39,73 @@
 	text-shadow:0px 1px 0px var(--color-white);
 }
 
-.preview .title .btn:hover {
+.preview .title .cancel:hover {
   background:linear-gradient(to bottom, var(--color-button-gradient) 5%, #ffffff 100%);
 	background-color:var(--color-button-gradient);
 }
 
-.preview .title .btn:active {
+.preview .title .cancel:active {
   position:relative;
 	top:1px;
 }
 
-.preview .title .btn:focus {
+.preview .title .cancel:focus {
   outline: none;
   box-shadow: none;
 }
 
-/* preview content */
+/* Create file button */
+.preview .title .create {
+  font-size: 13px;
+  height: 30px;
+  margin-top: 5px;
+  margin-right: 5px;
+  box-shadow:inset 0px -1px 0px 1px var(--color-background);
+	background:linear-gradient(to bottom, var(--color-white) 5%, var(--color-gradient) 100%);
+	background-color: var(--color-white);
+	border-radius:6px;
+	border:1px solid var(--color-button-border);
+	display:inline-block;
+	cursor:pointer;
+	color: var(--color-button-blue);
+	font-family:Arial;
+	font-size:15px;
+	font-weight:400;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px var(--color-white);
+}
+
+.preview .title .create:hover {
+  background:linear-gradient(to bottom, var(--color-button-gradient) 5%, #ffffff 100%);
+	background-color:var(--color-button-gradient);
+}
+
+.preview .title .create:active {
+  position:relative;
+	top:1px;
+}
+
+.preview .title .create:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.preview .title .create:disabled {
+  background:linear-gradient(to bottom, var(--color-white) 5%, var(--color-gradient) 100%);
+  background-color: var(--color-background);
+  color: var(--color-text-dark-mute);
+  cursor:not-allowed;
+}
+
 .preview .content {
   font-size: 15px;
   line-height: 1.6;
   color: var(--color-text-dark);
   white-space: pre-wrap;
+  display: flex;
+  flex-direction: column;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
     monospace;
   padding: 20px;
-}
-
-.preview .content .codeblock {
-
 }
