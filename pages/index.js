@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
 
 import { getFiles, postFile, deleteFile } from '../helperFunctions/FileHandler';
 import { updateFiles } from '../helperFunctions/WriteHelpers';
@@ -133,7 +132,5 @@ function PlaintextFilesChallenge() {
     </div>
   );
 }
-
-
 
 export default PlaintextFilesChallenge;

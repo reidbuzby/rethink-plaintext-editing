@@ -70,7 +70,7 @@ function FileCreator({ createNewFile }) {
             <select value={ fileType } onChange={ handleTypeChange }>
               <option value={''}>--Select file type--</option>
               {fileTypes.map(fType => (
-                <option value={fType}>{fileTypeToString(fType)}</option>
+                <option key={fType} value={fType}>{fileTypeToString(fType)}</option>
               ))}
             </select>
           </label>
