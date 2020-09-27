@@ -8,7 +8,6 @@ import FilesTable from '../components/FilesTable/FilesTable';
 import Previewer from '../components/Previewer/Previewer';
 import Editor from '../components/Editor/Editor';
 import FileCreator from '../components/FileCreator/FileCreator';
-
 import css from './style.module.css';
 
 function PlaintextFilesChallenge() {

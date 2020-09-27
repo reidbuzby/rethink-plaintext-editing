@@ -94,6 +94,7 @@ fileNameTaken.propTypes = {
   fileName: PropTypes.string
 }
 
+// returns an array, gets array of file names from local storage
 function getFileNamesArray() {
   const fileNames = JSON.parse(localStorage.getItem('fileNames'));
   return fileNames;
@@ -120,6 +121,7 @@ getFilesFromStorage.propTypes = {
   fileNames: PropTypes.string
 }
 
+// void, deletes the given file from local storage
 export function deleteFile(file) {
   const fileName = path.basename(file.name);
   const fileNames = getFileNamesArray();
@@ -136,5 +138,5 @@ export function deleteFile(file) {
 }
 
 deleteFile.propTypes = {
-  file: PropTypes.func
+  file: PropTypes.obj
 }

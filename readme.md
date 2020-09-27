@@ -1,21 +1,25 @@
 # Rethink Plaintext Editing
 
-This is our frontend coding challenge. It gives us a chance to see your abilities and how you approach problems. It is designed to give you unlimited creative freedom as you develop a solution. Feel free to use any packages/tools/etc. you'd like to edit text as elegantly as possible. There are a variety of different file types to experiment with as you see fit.
+To run:
 
-To run the challenge:
-
-- FORK this repo
-- Download forked repo and run `npm install && npm run dev`
+- Download repo and run `npm install && npm run dev`
 - Open `localhost:3000` in your browser
-- Enjoy
 
-Once complete, please email us a link to your forked repo with clean, tested code. We will use Chrome to run it.
+# Features implemented
 
-- Rethink Engineering
+- Rendering of markdown and code snippets.
+- File editor for all file types.
+- Persistent file storage using local storage. Files persist until browsing data is deleted.
+- Ability to create new files in .txt, .md, .json, and .js formats.
+- Ability to delete files.
 
 # Packages used
 
-react-markdown
-react-code-blocks
-slate
-reactjs-popup
+react-markdown:
+https://www.npmjs.com/package/react-markdown
+
+react-code-blocks:
+https://www.npmjs.com/package/react-code-blocks
+
+slate:
+https://www.npmjs.com/package/slate
