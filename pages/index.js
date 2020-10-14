@@ -15,15 +15,13 @@ function PlaintextFilesChallenge() {
   const [mode, setMode] = useState(null);
 
   useEffect(() => {
-    getFiles().then((result) => {
-      if (result) {
-        setFiles(result);
-      }
-      else {
-        setFiles([]);
-      }
-    });
+    fetchFiles();
   }, []);
+
+  async function fetchFiles() {
+    const fetchedFiles = await getFiles();
+    setFiles(fetchedFiles);
+  }
 
   function preProcessSetActiveFile(value) {
     if (mode === 'edit') {

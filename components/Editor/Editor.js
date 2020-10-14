@@ -13,17 +13,19 @@ function Editor({ file, write }) {
   const [edited, setEdited] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      setValue(generateInitialValue(await file.text()));
-    })();
+    fetchFileValue();
   }, [file]);
+
+  async function fetchFileValue() {
+    setValue(generateInitialValue(await file.text()));
+  }
 
   function validateDiscard() {
     if (!edited) {
       write(null);
     }
     else {
-      if(confirm("Are you sure you want to discard changes?")) {
+      if (confirm("Are you sure you want to discard changes?")) {
         write(null);
       }
     }

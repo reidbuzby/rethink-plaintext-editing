@@ -5,7 +5,7 @@ import path from 'path';
 
 // returns promise, value expected to be an array of locally stored files
 export async function getFiles() {
-  const fileNames = localStorage.getItem('fileNames');
+  const fileNames = await localStorage.getItem('fileNames');
   if (fileNames) {
     return getFilesFromStorage(fileNames);
   }
